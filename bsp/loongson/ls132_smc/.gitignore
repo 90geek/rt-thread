@@ -1,0 +1,5 @@
+build/*
+rtconfig.pyc
+rtthread.elf
+rtthread.map
+.sconsign.dblite

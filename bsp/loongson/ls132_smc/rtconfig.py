@@ -1,8 +1,13 @@
 import os
 
+if os.getenv('RTT_ROOT'):
+    RTT_ROOT = os.getenv('RTT_ROOT')
+else:
+    RTT_ROOT = '../..'
+
 # CPU options
 ARCH='mips'
-CPU ='gs232'
+CPU ='common'
 
 # toolchains options
 CROSS_TOOL  = 'gcc'
@@ -25,9 +30,6 @@ if os.getenv('RTT_EXEC_PATH'):
 
 BUILD       = 'debug'
 
-# don't use loongson company's cross-compilation tool chain to compile the RT-Thread
-# must use the cross-compilation tool chain that RT-Thread recommand
-# download: https://coding.net/u/bernard/p/rtthread_tools/git/blob/master/GCC_Toolchains.md
 PREFIX = 'mips-sde-elf-'
 CC = PREFIX + 'gcc'
 AS = PREFIX + 'gcc'
@@ -39,10 +41,11 @@ OBJDUMP = PREFIX + 'objdump'
 OBJCPY = PREFIX + 'objcopy'
 READELF = PREFIX + 'readelf'
 
-DEVICE = ' -mips32 -msoft-float -mfp32'
+DEVICE = ' -mips32r2 -msoft-float -mfp32'
 CFLAGS = DEVICE + ' -EL -G0 -mno-abicalls -fno-pic -fno-builtin -fno-exceptions -ffunction-sections -fomit-frame-pointer'
 AFLAGS = ' -c' + DEVICE + ' -EL -fno-pic -fno-builtin -mno-abicalls -x assembler-with-cpp'
-LFLAGS = DEVICE + ' -nostartfiles -EL -Wl,--gc-sections,-Map=rtthread.map,-cref,-u,Reset_Handler -T ls1c_ram.lds'
+LFLAGS = DEVICE + ' -nostartfiles -EL -Wl,--gc-sections,-Map=rtthread.map,-cref,-u,Reset_Handler -T ls3-smc_rom.lds'
+CXXFLAGS = CFLAGS
 
 CPATH = ''
 LPATH = ''

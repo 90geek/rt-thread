@@ -1,8 +1,8 @@
 import os
 
 # CPU options
-ARCH='mips'
-CPU ='gs232'
+ARCH='loongarch'
+CPU ='la'
 
 # toolchains options
 CROSS_TOOL  = 'gcc'
@@ -12,7 +12,7 @@ if os.getenv('RTT_CC'):
 
 if  CROSS_TOOL == 'gcc':
 	PLATFORM    = 'gcc'
-	EXEC_PATH   = "/home/zhubo/loongson/toolchain/mips-2015.05/bin"
+	EXEC_PATH   = "/home/zhubo/loongson/toolchain/la32im-toolchain/bin"
 #	EXEC_PATH   = r'D:\mgc\embedded\codebench\bin'
 else:
     print('================ERROR===========================')
@@ -28,7 +28,7 @@ BUILD       = 'debug'
 # don't use loongson company's cross-compilation tool chain to compile the RT-Thread
 # must use the cross-compilation tool chain that RT-Thread recommand
 # download: https://coding.net/u/bernard/p/rtthread_tools/git/blob/master/GCC_Toolchains.md
-PREFIX = 'mips-sde-elf-'
+PREFIX = 'loongarch32-unknown-elf-'
 CC = PREFIX + 'gcc'
 AS = PREFIX + 'gcc'
 AR = PREFIX + 'ar'
@@ -39,9 +39,10 @@ OBJDUMP = PREFIX + 'objdump'
 OBJCPY = PREFIX + 'objcopy'
 READELF = PREFIX + 'readelf'
 
+-mabi=ilp32 -march=la32im  -fno-delayed-branch  -mno-memcpy -fno-builtin -fno-pic
 DEVICE = ' -mips32 -msoft-float -mfp32'
 CFLAGS = DEVICE + ' -EL -G0 -mno-abicalls -fno-pic -fno-builtin -fno-exceptions -ffunction-sections -fomit-frame-pointer'
-AFLAGS = ' -c' + DEVICE + ' -EL -fno-pic -fno-builtin -mno-abicalls -x assembler-with-cpp'
+AFLAGS = ' -c' + DEVICE + ' -fno-pic -fno-builtin -mno-abicalls -x assembler-with-cpp'
 LFLAGS = DEVICE + ' -nostartfiles -EL -Wl,--gc-sections,-Map=rtthread.map,-cref,-u,Reset_Handler -T ls1c_ram.lds'
 
 CPATH = ''
